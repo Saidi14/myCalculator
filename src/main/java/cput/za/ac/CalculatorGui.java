@@ -33,7 +33,7 @@ public class CalculatorGui extends JFrame{
         outerContainer.setLayout(outerLayout);
         outerContainer.add(display);
         outerContainer.add(buttonContainer);
-
+        
         buttonContainer.setLayout(buttonLayout);
         buttonContainer.setPreferredSize(new Dimension(400,500));
         buttonContainer.add(nineButton);
@@ -52,28 +52,25 @@ public class CalculatorGui extends JFrame{
         buttonContainer.add(divideButton);
         buttonContainer.add(percentButton);
         buttonContainer.add(equalsButton);
-
         display.setPreferredSize(new Dimension(400, 100));
 
         mainContainer.add(outerContainer, BorderLayout.CENTER);
         mainContainer.add(watermark, BorderLayout.SOUTH);
-
         mainContainer.setTitle("myCalculator");
         mainContainer.setSize(400, 600);
         mainContainer.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainContainer.setLocationRelativeTo(null);
         mainContainer.setVisible(true);
     }
-
     public static int calculate(int x, int y, char operation){
         switch(operation){
-            case 'A':
+            case '+':
                 return x + y;
-            case 'S':
+            case '-':
                 return x - y;
-            case 'M':
+            case '*':
                 return x * y;
-            case 'D':
+            case '/':
                 return x / y;
             default:
                 return 0;
@@ -82,7 +79,6 @@ public class CalculatorGui extends JFrame{
     //assign button text and add action listeners
     public void setButtons(){
         oneButton = new CalcButton("1");
-
         twoButton = new CalcButton("2");
         threeButton = new CalcButton("3");
         fourButton = new CalcButton("4");
@@ -100,110 +96,22 @@ public class CalculatorGui extends JFrame{
         equalsButton = new CalcButton("=");
 
         //add action listeners
-        oneButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "1");
-            }
-        });
-        twoButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "2");
-            }
-        });
-        threeButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "3");
-            }
-        });
-        fourButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "4");
-            }
-        });
-        fiveButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "5");
-            }
-        });
-        sixButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "6");
-            }
-        });
-        sevenButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "7");
-            }
-        });
-        eightButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "8");
-            }
-        });
-        nineButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "9");
-            }
-        });
-        zeroButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                String x = display.getText();
-                display.setText(x + "0");
-            }
-        });
+        oneButton.addActionListener(new numActionListener("1"));
+        twoButton.addActionListener(new numActionListener("2"));
+        threeButton.addActionListener(new numActionListener("3"));
+        fourButton.addActionListener(new numActionListener("4"));
+        fiveButton.addActionListener(new numActionListener("5"));
+        sixButton.addActionListener(new numActionListener("6"));
+        sevenButton.addActionListener(new numActionListener("7"));
+        eightButton.addActionListener(new numActionListener("8"));
+        nineButton.addActionListener(new numActionListener("9"));
+        zeroButton.addActionListener(new numActionListener("0"));
 
         //now add actionlisteners for the operator buttons
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                value1 = Integer.parseInt(display.getText());
-                display.setText("");
-                operation = 'A';
-            }
-        });
-        subtractButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                value1 = Integer.parseInt(display.getText());
-                display.setText("");
-                operation = 'S';
-            }
-        });
-        multiplyButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                value1 = Integer.parseInt(display.getText());
-                display.setText("");
-                operation = 'M';
-            }
-        });
-        divideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                value1 = Integer.parseInt(display.getText());
-                display.setText("");
-                operation = 'D';
-            }
-        });
+        addButton.addActionListener(new operationActionListener('+'));
+        subtractButton.addActionListener(new operationActionListener('-'));
+        multiplyButton.addActionListener(new operationActionListener('*'));
+        divideButton.addActionListener(new operationActionListener('/'));
         /*
         Finally, add an action listener to the equals button, which will call the calculate method
         */
@@ -217,6 +125,30 @@ public class CalculatorGui extends JFrame{
         });
 
 
+    }
+    //declare action listener for number buttons
+    public class numActionListener implements ActionListener {
+        String value;
+        numActionListener(String setVal){
+            value = setVal;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e){
+            display.setText(display.getText() + value);
+        }
+    }
+    //action listener for operator buttons
+    public class operationActionListener implements ActionListener{
+        char setOperation;
+        public operationActionListener(char x){
+            setOperation = x;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            value1 = Integer.parseInt(display.getText());
+            display.setText("");
+            operation = setOperation;
+        }
     }
     //set button visuals
     public class CalcButton extends JButton{
