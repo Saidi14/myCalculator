@@ -9,7 +9,7 @@ public class CalculatorGui extends JFrame{
     private JFrame mainContainer;
     private JPanel outerContainer, buttonContainer;
     private CalcButton oneButton, twoButton, threeButton, fourButton, fiveButton, sixButton, sevenButton, eightButton, nineButton, zeroButton;
-    private CalcButton addButton, subtractButton, multiplyButton, divideButton, percentButton, equalsButton;
+    private CalcButton addButton, subtractButton, multiplyButton, divideButton, clearButton, equalsButton;
     private JTextField display;
     private JLabel watermark;
     private int value1, value2;
@@ -36,22 +36,26 @@ public class CalculatorGui extends JFrame{
         
         buttonContainer.setLayout(buttonLayout);
         buttonContainer.setPreferredSize(new Dimension(400,500));
+
         buttonContainer.add(nineButton);
         buttonContainer.add(eightButton);
         buttonContainer.add(sevenButton);
+        buttonContainer.add(multiplyButton);
+
         buttonContainer.add(sixButton);
         buttonContainer.add(fiveButton);
         buttonContainer.add(fourButton);
+        buttonContainer.add(divideButton);
         buttonContainer.add(threeButton);
         buttonContainer.add(twoButton);
         buttonContainer.add(oneButton);
+        buttonContainer.add(subtractButton);
+        buttonContainer.add(clearButton);
+
         buttonContainer.add(zeroButton);
         buttonContainer.add(addButton);
-        buttonContainer.add(subtractButton);
-        buttonContainer.add(multiplyButton);
-        buttonContainer.add(divideButton);
-        buttonContainer.add(percentButton);
         buttonContainer.add(equalsButton);
+
         display.setPreferredSize(new Dimension(400, 100));
 
         mainContainer.add(outerContainer, BorderLayout.CENTER);
@@ -89,12 +93,17 @@ public class CalculatorGui extends JFrame{
         nineButton = new CalcButton("9");
         zeroButton = new CalcButton("0");
         addButton = new CalcButton("+");
+        addButton.setBackground(Color.PINK);
         subtractButton = new CalcButton("-");
+        subtractButton.setBackground(Color.PINK);
         multiplyButton = new CalcButton("x");
+        multiplyButton.setBackground(Color.PINK);
         divideButton = new CalcButton("/");
-        percentButton = new CalcButton("%");
+        divideButton.setBackground(Color.PINK);
+        clearButton = new CalcButton("C");
+        clearButton.setBackground(Color.CYAN);
         equalsButton = new CalcButton("=");
-
+        equalsButton.setBackground(Color.PINK);
         //add action listeners
         oneButton.addActionListener(new numActionListener("1"));
         twoButton.addActionListener(new numActionListener("2"));
@@ -112,6 +121,15 @@ public class CalculatorGui extends JFrame{
         subtractButton.addActionListener(new operationActionListener('-'));
         multiplyButton.addActionListener(new operationActionListener('*'));
         divideButton.addActionListener(new operationActionListener('/'));
+        //add actionListener to clear button to reset all variables
+        clearButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                value1 = 0;
+                value2 = 0;
+                display.setText("");
+            }
+        });
         /*
         Finally, add an action listener to the equals button, which will call the calculate method
         */
